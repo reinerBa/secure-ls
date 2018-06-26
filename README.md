@@ -91,6 +91,22 @@ $ npm install secure-ls
 
 ```
 
+* Example 4: With `AES` Encryption, multiple stores
+
+```
+> var ls0 = new SecureLS({encodingType: 'aes', encryptionSecret: 'mikes-secret-key', store: 'mikes-store'});
+> ls0.set('personal-data', {data: 'test'}); // set personal information
+> ls0.get('personal-data'); // print data
+  {data: 'test'}
+
+> var ls1 = new SecureLS({encodingType: 'aes', encryptionSecret: 'johns-secret-key', store: 'johns-store'});
+> ls1.set('personal-data', {data: 'test1'}); // set personal information
+> ls1.get('personal-data'); // print data
+  {data: 'test1'}
+> ls1.removeAll(); // remove all keys from johns store only
+
+```
+
 ## API Documentation
 
 #### Create an instance / reference before using.
@@ -107,6 +123,7 @@ var ls = new SecureLS();
 | **encodingType**      |     Base64     |  `base64`/`aes`/`des`/`rabbit`/`rc4`/`''` |
 | **isCompression**     |     `true`     |    `true`/`false`                         |
 | **encryptionSecret**  |  PBKDF2 value  |    String                         |
+| **store**  |  `''`  |    String                         |
 
 **Note:** `encryptionSecret` will only be used for the Encryption and Decryption of data with `AES`, `DES`, `RC4`, `RABBIT`, and the library will discard it if no encoding / Base64 encoding method is choosen.
 
