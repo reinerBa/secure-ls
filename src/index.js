@@ -34,6 +34,9 @@ export default class SecureLS {
       config.encodingType.toLowerCase() :
       constants.EncrytionTypes.BASE64;
     this.config.encryptionSecret = config.encryptionSecret;
+    this.store = typeof config.store !== 'undefined' ?
+      config.store + '#' :
+      '';
 
     this.ls = localStorage;
     this.init();
@@ -166,7 +169,7 @@ export default class SecureLS {
   };
 
   getDataFromLocalStorage(key) {
-    return this.ls.getItem(key, true);
+    return this.ls.getItem(this.store + key, true);
   };
 
   getAllKeys() {
@@ -199,7 +202,7 @@ export default class SecureLS {
   };
 
   setDataToLocalStorage(key, data) {
-    this.ls.setItem(key, data);
+    this.ls.setItem(this.store + key, data);
   };
 
   remove(key) {
@@ -217,7 +220,7 @@ export default class SecureLS {
       this.utils.removeFromKeysList(key);
       this.setMetaData();
     }
-    this.ls.removeItem(key);
+    this.ls.removeItem(this.store + key);
   };
 
   removeAll() {
@@ -225,9 +228,9 @@ export default class SecureLS {
 
     keys = this.getAllKeys();
     for (i = 0; i < keys.length; i++) {
-      this.ls.removeItem(keys[i]);
+      this.ls.removeItem(this.store + keys[i]);
     }
-    this.ls.removeItem(this.utils.metaKey);
+    this.ls.removeItem(this.store + this.utils.metaKey);
 
     this.resetAllKeys();
   };
